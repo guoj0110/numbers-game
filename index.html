@@ -9,16 +9,13 @@
             background-color: red;
         }
 
-        /* 添加 CSS 样式，用于将背景颜色设置为绿色 */
-        .green-cell {
-            background-color: green;
-        }
-
         /* 添加 CSS 样式，用于美化表格 */
         table {
-            border-collapse: collapse;
+            border-collapse: separate; /* 使用分隔的边框模型 */
+            border-spacing: 10px; /* 添加单元格之间的距离 */
             width: 100%; /* 设置表格宽度为100%以适应屏幕 */
             margin: 0 auto; /* 水平居中 */
+            background-color: black; /* 设置整体表格底色为黑色 */
         }
 
         table, th, td {
@@ -37,6 +34,9 @@
             height: 0; /* 确保单元格具有相等的高度，以形成正方形 */
             padding-bottom: 10%; /* 设置单元格底部内边距为10%以形成正方形 */
             position: relative; /* 设置相对定位以容纳内容 */
+            background-color: lime; /* 设置单元格底色为荧光绿色 */
+            transition: background-color 0.3s ease; /* 添加过渡效果以在点击后改变颜色 */
+            border-radius: 10px; /* 设置圆角半径为10px，根据需要调整 */
         }
 
         /* 添加样式以使数字居中并占据70%空间 */
@@ -50,6 +50,16 @@
             top: 50%; /* 将内容向上偏移50%以实现垂直居中 */
             left: 50%; /* 将内容向左偏移50%以实现水平居中 */
             transform: translate(-50%, -50%); /* 使用transform属性调整内容位置 */
+        }
+
+        /* 添加样式以在点击后改变颜色 */
+        td.clicked {
+            background-color: darkgreen; /* 设置点击后的背景颜色为暗绿色 */
+        }
+
+        /* 添加样式以调整行与行之间的距离 */
+        tr {
+            border-spacing: 0 20px; /* 设置行与行之间的距离为单元格高度的一半 */
         }
     </style>
 </head>
@@ -77,15 +87,15 @@
 
         // 数字范围
         var minNumber = 1;
-        var maxNumber = 90; // 90个数字
+        var maxNumber = 64; // 64个数字
 
         // 创建数组并打乱顺序
         var numbers = Array.from({ length: maxNumber - minNumber + 1 }, (_, i) => i + minNumber);
         numbers.sort(() => Math.random() - 0.5);
 
         // 填充表格
-        var numRows = 10;
-        var numCols = 9;
+        var numRows = 8;
+        var numCols = 8;
 
         for (var i = 0; i < numRows; i++) {
             var row = table.insertRow();
@@ -129,6 +139,9 @@
                         var finalResult = document.getElementById("final-result");
                         finalResult.textContent = lastClickedNumber;
                     }
+                    else {
+                        clickedCell.classList.add("clicked"); // 设置点击后的样式
+                    }
                 } else {
                     // 点击的是错误的数字，显示错误消息
                     var message = document.getElementById("message");
@@ -163,6 +176,7 @@
     </script>
 </body>
 </html>
+
 
 
 
