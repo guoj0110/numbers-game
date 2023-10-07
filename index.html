@@ -77,7 +77,7 @@
 
         // 数字范围
         var minNumber = 1;
-        var maxNumber = 99; // 99个数字
+        var maxNumber = 90; // 90个数字
 
         // 创建数组并打乱顺序
         var numbers = Array.from({ length: maxNumber - minNumber + 1 }, (_, i) => i + minNumber);
@@ -94,19 +94,20 @@
                 var span = document.createElement("span");
                 span.textContent = numbers[i * numCols + j];
                 cell.appendChild(span);
+                cell.addEventListener("click", handleClick);
             }
         }
 
         // 游戏结束标志
         var gameEnded = false;
 
-        // 定义点击事件处理函数
-        table.addEventListener("click", function (event) {
+        // 定义鼠标点击事件处理函数
+        function handleClick(event) {
             if (gameEnded) {
-                return; // 游戏已经结束，不处理点击事件
+                return; // 游戏已经结束，不处理鼠标点击事件
             }
 
-            var clickedCell = event.target;
+            var clickedCell = event.currentTarget;
             if (clickedCell.tagName === "TD" && !clickedCell.classList.contains("red-cell") && !clickedCell.classList.contains("green-cell")) {
                 var clickedNumber = parseInt(clickedCell.textContent);
                 if (clickedNumber === minNumber) {
@@ -134,7 +135,7 @@
                     message.textContent = "Ошибка! Пожалуйста，按顺序点击数字.";
                 }
             }
-        });
+        }
 
         // 更新倒计时
         function updateTimer() {
@@ -162,6 +163,7 @@
     </script>
 </body>
 </html>
+
 
 
 
