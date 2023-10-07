@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Цифровой элиминационный тест</title>
+    <style>
+        /* 添加 CSS 样式，用于将背景颜色设置为红色 */
+        .red-cell {
+            background-color: red;
+        }
+
+        /* 添加 CSS 样式，用于将背景颜色设置为绿色 */
+        .green-cell {
+            background-color: green;
+        }
+
+        /* 添加 CSS 样式，用于美化表格 */
+        table {
+            border-collapse: collapse;
+            width: 100%; /* 设置表格宽度为100%以适应屏幕 */
+            margin: 0 auto; /* 水平居中 */
+        }
+
+        table, th, td {
+            border: 2px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2; /* 表头背景颜色 */
+        }
+
+        td {
+            cursor: pointer; /* 将光标设置为手型 */
+        }
+    </style>
+</head>
+<body>
+    <h1>Цифровой элиминационный тест</h1>
+    <div class="game-container">
+        <!-- 表格区域 -->
+        <table id="number-table">
+            <!-- 表格内容将在JavaScript中生成 -->
+        </table>
+        <p id="timer">倒计时: 120</p>
+        <p id="message"></p> <!-- 用于显示提示消息 -->
+        <p id="last-clicked-number"></p> <!-- 用于显示最后点击的数字 -->
+        <p id="thank-you-message" style="display: none;">Благодарим за участие. Ваши окончательные результаты: <span id="final-result"></span></p>
+    </div>
+
+    <script>
+        // 获取表格元素
+        var table = document.getElementById("number-table");
+
+        // 设置初始倒计时时间
+        var remainingTime = 120;
+        var timer = document.getElementById("timer");
+        timer.textContent = "倒计时: " + remainingTime;
+
+        // 数字范围
+        var minNumber = 1;
+        var maxNumber = 100;
+
+        // 创建数组并打乱顺序
+        var numbers = Array.from({ length: maxNumber - minNumber + 1 }, (_, i) => i + minNumber);
+        numbers.sort(() => Math.random() - 0.5);
+
+        // 填充表格
+        var row, cell;
+        var cellCounter = 0;
+        var numRows = 20;
+        var numCols = 5;
+
+        for (var i = 0; i < numRows; i++) {
+            row = table.insertRow();
+            for (var j = 0; j < numCols; j++) {
+                cell = row.insertCell();
+                cell.textContent = numbers[cellCounter];
+                cellCounter++;
+            }
+        }
+
+        // 游戏结束标志
+        var gameEnded = false;
+
+        // 定义点击事件处理函数
+        table.addEventListener("click", function (event) {
+            if (gameEnded) {
+                return; // 游戏已经结束，不处理点击事件
+            }
+
+            var clickedCell = event.target;
+            if (clickedCell.tagName === "TD" && !clickedCell.classList.contains("red-cell") && !clickedCell.classList.contains("green-cell")) {
+                var clickedNumber = parseInt(clickedCell.textContent);
+                if (clickedNumber === minNumber) {
+                    // 点击的是当前数字，将其标记为红色
+                    clickedCell.classList.add("red-cell");
+                    minNumber++;
+                    if (minNumber > maxNumber) {
+                        // 所有数字都被点击，游戏结束
+                        gameEnded = true; // 设置游戏结束标志
+                        timer.textContent = "Игра окончена！";
+                        var lastClickedNumber = clickedNumber - 1;
+                        document.getElementById("last-clicked-number").textContent = "Последний набранный номер：" + lastClickedNumber;
+                        clickedCell.classList.remove("red-cell");
+                        clickedCell.classList.add("green-cell"); // 将最后点击的数字标记为绿色
+
+                        // 显示感谢消息和最终结果
+                        var thankYouMessage = document.getElementById("thank-you-message");
+                        thankYouMessage.style.display = "block";
+                        var finalResult = document.getElementById("final-result");
+                        finalResult.textContent = lastClickedNumber;
+                    }
+                } else {
+                    // 点击的是错误的数字，显示错误消息
+                    var message = document.getElementById("message");
+                    message.textContent = "Ошибка! Пожалуйста，按顺序点击数字.";
+                }
+            }
+        });
+
+        // 更新倒计时
+        function updateTimer() {
+            if (!gameEnded) {
+                remainingTime--;
+                timer.textContent = "Осталось времени: " + remainingTime + " сек.";
+                if (remainingTime <= 0) {
+                    // 时间用尽，游戏结束
+                    gameEnded = true; // 设置游戏结束标志
+                    timer.textContent = "Игра окончена.!";
+                    var lastClickedNumber = minNumber - 1;
+                    document.getElementById("last-clicked-number").textContent = "Последний набранный номер：" + lastClickedNumber;
+
+                    // 显示感谢消息和最终结果
+                    var thankYouMessage = document.getElementById("thank-you-message");
+                    thankYouMessage.style.display = "block";
+                    var finalResult = document.getElementById("final-result");
+                    finalResult.textContent = lastClickedNumber;
+                }
+            }
+        }
+
+        // 每秒更新倒计时
+        var timerInterval = setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
