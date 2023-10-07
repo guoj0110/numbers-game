@@ -17,7 +17,6 @@
         /* 添加 CSS 样式，用于美化表格 */
         table {
             border-collapse: collapse;
-            width: 95%; /* 设置表格宽度为80%以适应屏幕 */
             margin: 0 auto; /* 水平居中 */
         }
 
@@ -33,6 +32,9 @@
 
         td {
             cursor: pointer; /* 将光标设置为手型 */
+            width: 10%; /* 设置单元格宽度为10% */
+            height: 0; /* 确保单元格具有相等的高度，以形成正方形 */
+            padding-bottom: 10%; /* 设置单元格底部内边距为10%以形成正方形 */
         }
     </style>
 </head>
@@ -69,8 +71,8 @@
         // 填充表格
         var row, cell;
         var cellCounter = 0;
-        var numRows = 10; // 设置为10行
-        var numCols = 10; // 设置为10列
+        var numRows = 10; // 10 行
+        var numCols = 10; // 10 列
 
         for (var i = 0; i < numRows; i++) {
             row = table.insertRow();
@@ -115,7 +117,7 @@
                 } else {
                     // 点击的是错误的数字，显示错误消息
                     var message = document.getElementById("message");
-                    message.textContent = "Ошибка! Пожалуйста，按顺序点击数字.";
+                    message.textContent = "Ошибка! Пожалуйста, нажимайте числа в порядке.";
                 }
             }
         });
@@ -146,3 +148,4 @@
     </script>
 </body>
 </html>
+
