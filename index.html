@@ -18,7 +18,6 @@
         table {
             border-collapse: collapse;
             width: 100%; /* 设置表格宽度为100%以适应屏幕 */
-            
             margin: 0 auto; /* 水平居中 */
         }
 
@@ -37,6 +36,15 @@
             width: 10%; /* 设置单元格宽度为10% */
             height: 0; /* 确保单元格具有相等的高度，以形成正方形 */
             padding-bottom: 10%; /* 设置单元格底部内边距为10%以形成正方形 */
+        }
+
+        /* 添加样式以使数字居中并占据70%空间 */
+        td span {
+            display: inline-block;
+            width: 70%;
+            line-height: 100%;
+            vertical-align: middle;
+            font-size: 30px; /* 设置数字大小 */
         }
     </style>
 </head>
@@ -78,7 +86,9 @@
             var row = table.insertRow();
             for (var j = 0; j < numCols; j++) {
                 var cell = row.insertCell();
-                cell.textContent = numbers[i * numCols + j];
+                var span = document.createElement("span");
+                span.textContent = numbers[i * numCols + j];
+                cell.appendChild(span);
             }
         }
 
